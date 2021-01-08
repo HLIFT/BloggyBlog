@@ -1,0 +1,31 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block title %}Liste des posts{% endblock %}
+
+{% block body %}
+        
+    <h1 class="text-center">Liste des posts</h1>
+    <br>
+    {% for post in posts %}
+    {{dump(post)}}
+        {{ post.title}}
+        <br>
+        {{post.description}}
+        <br>
+        {{post.content}}
+        <br>
+        <br>
+        {{post.createdAt|date("d/m/Y")}}
+        <br>
+        {{post.publishedAt|date("d/m/Y")}}
+        <br>
+        {{post.updatedAt|date("d/m/Y")}}
+        <br>
+        <a href="http://symfony.iut/admin/post/{{post.id}}/edit">Modifier le post</a>
+        <a href="http://symfony.iut/admin/post/{{post.id}}/remove">Supprimer le post</a>
+        <br>
+        <br>
+    {% endfor %}
+    <br>
+    <a href="http://symfony.iut/admin/post/create">Ajouter un nouveau post</a>
+{% endblock %}

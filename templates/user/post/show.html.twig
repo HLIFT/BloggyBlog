@@ -1,0 +1,24 @@
+{% extends 'user/base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+<div class="text-center" style="padding-top : 2%">
+    <h1>Visualisation du post</h1>
+    <br>
+    Id du post : {{post.id}}
+    <br>
+    Titre du post : {{post.title}}
+    <br>
+    Contenu du post : {{post.content}}
+    <br>
+    Date de publication du post : 
+    {% if post.publishedAt != null %}
+        {{post.publishedAt|date("d/m/Y")}}
+    {% else %}
+        Aucune
+    {% endif %}
+
+
+</div>
+{% endblock %}

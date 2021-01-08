@@ -1,0 +1,27 @@
+{% extends 'user/base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+<div class="text-center" style="padding-top:2%">
+    <h1>Accueil</h1>
+</div>
+
+    <h2>Liste des posts</h2>
+    <br>
+    {% for post in posts %}
+        {{ post.title}}
+        {{post.description}}
+        <br>
+        {{post.content}}
+        <br>
+        {{post.createdAt|date("d/m/Y")}}
+        <br>
+        {{post.publishedAt|date("d/m/Y")}}
+        <br>
+        {{post.updatedAt|date("d/m/Y")}}
+        <br>
+        <br>
+    {% endfor %}
+
+{% endblock %}

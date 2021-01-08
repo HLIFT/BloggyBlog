@@ -1,0 +1,27 @@
+{% extends 'user/base.html.twig' %}
+
+{% block title %}Ajouter un commentaire{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Ajouter un commentaire</h1>
+    <br>
+    <h2>Post :</h2>
+    <br>
+    Titre : {{post.title}}
+    <br>
+    Description : {{post.description}}
+    <br>
+    Contenu : {{post.content}}
+    <br>
+    Date de publication : 
+    {% if post.publishedAt != null %}
+        {{post.publishedAt|date("d/m/Y")}}
+    {% else %}
+        Aucune
+    {% endif %}
+    <br>
+    <br>
+    <h2>Commentaire :</h2>
+    <br>
+    {{ form(formView) }}
+{% endblock %}
