@@ -66,7 +66,7 @@ class Post
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class)
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="posts")
      */
     private $categories;
 

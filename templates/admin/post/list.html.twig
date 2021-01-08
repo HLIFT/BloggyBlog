@@ -7,21 +7,28 @@
     <h1 class="text-center">Liste des posts</h1>
     <br>
     {% for post in posts %}
-    {{dump(post)}}
+        Titre :
         {{ post.title}}
         <br>
+        Description :
         {{post.description}}
         <br>
+        Contenu :
         {{post.content}}
         <br>
         <br>
-        {{post.createdAt|date("d/m/Y")}}
+        Crée le :
+        {{post.createdAt|date("d/m/Y")}} à {{post.createdAt|date("H:i")}}
         <br>
-        {{post.publishedAt|date("d/m/Y")}}
+        Publié le :
+        {{post.publishedAt|date("d/m/Y")}} à {{post.publishedAt|date("H:i")}}
         <br>
-        {{post.updatedAt|date("d/m/Y")}}
+        Mis à jour le :
+        {{post.updatedAt|date("d/m/Y")}} à {{post.updatedAt|date("H:i")}}
         <br>
-        <a href="http://symfony.iut/admin/post/{{post.id}}/edit">Modifier le post</a>
+
+        <br>
+        <a href="http://symfony.iut/admin/post/{{post.slug}}/edit">Modifier le post</a>
         <a href="http://symfony.iut/admin/post/{{post.id}}/remove">Supprimer le post</a>
         <br>
         <br>

@@ -18,6 +18,11 @@
     {% else %}
         Aucune
     {% endif %}
+    <br>
+    Catégories :
+    {% for category in post.categories %}
+        {{category.name}}
+    {% endfor %}
 
 
 </div>

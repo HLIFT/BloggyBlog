@@ -134,36 +134,40 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/admin/post/{id}/edit", name="post.edit", requirements={"id"="\d+"})
+     * @Route("/admin/post/{slug}/edit", name="post.edit")
      */
-    public function update(int $id, HttpFoundationRequest $request): Response
+    public function update(string $slug, HttpFoundationRequest $request): Response
     {
         // On récupère le manager des entities
         $entityManager = $this->getDoctrine()->getManager();
         // On récupère le `repository` en rapport avec l'entity `Post`
         $postRepository = $entityManager->getRepository(Post::class);
         // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
-        $post = $postRepository->find($id);
+        $post = $postRepository->findOneBy(['slug' => $slug]);
 
         if(!$post) {
             throw $this->createNotFoundException(
-                "Pas de Post trouvé avec l'id ".$id
+                "Pas de Post trouvé avec le slug ".$slug
             );
         }
 
         $form = $this->createForm(PostType::class, $post);
-
+        
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
+            $date = new DateTime();
+            $slugger = new AsciiSlugger();
             $post = $form->getData();
+            $post->setUpdatedAt($date);
+            $post->setSlug($slugger->slug($post->getTitle()));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
             
-            $id = $post->getId();
-            return $this->redirectToRoute('admin.post.show', ['id' => $id]);
+            $slug = $post->getSlug();
+            return $this->redirectToRoute('admin.post.show', ['slug' => $slug]);
         }
 
         return $this->render('admin/post/edit.html.twig', [

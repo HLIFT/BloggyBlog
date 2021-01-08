@@ -3,5 +3,13 @@
 {% block title %}Hello PostController!{% endblock %}
 
 {% block body %}
-    {{ form(formView) }}
+    {{ form_start(formView) }}
+
+    <h3>Catégories</h3>
+    <ul class="tags">
+        {% for category in formView.categories %}
+            <li>{{ form_row(category.name) }}</li>
+        {% endfor %}
+    </ul>
+{{ form_end(formView) }}
 {% endblock %}

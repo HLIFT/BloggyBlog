@@ -25,7 +25,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Post::class)
+     * @ORM\ManyToMany(targetEntity=Post::class, mappedBy="categories")
      */
     private $posts;
 
