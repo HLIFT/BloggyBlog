@@ -14,9 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
     /**
-     * @Route("/admin/comment", name="comment.index")
+     * @Route("/admin/comment/list", name="comment.list")
      */
-    public function index(): Response
+    public function list(): Response
     {
         $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
         $comments = $commentRepository->findAll();

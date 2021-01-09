@@ -17,31 +17,6 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class PostController extends AbstractController
 {
     /**
-     * 
-     * @Route("/admin/post", name="admin.post.index")
-     */
-    public function index(HttpFoundationRequest $request): Response
-    {
-        $routeName = $request->attributes->get('_route');
-
-        $postRepository = $this->getDoctrine()->getRepository(Post::class);
-        $posts = $postRepository->findAll();
-
-        if($routeName == "admin.post.index")
-        {
-            return $this->render('admin/post/index.html.twig', [
-                'posts' => $posts,
-            ]);
-        }
-        else
-        {
-            return $this->render('user/post/index.html.twig', [
-                'posts' => $posts,
-            ]);
-        }       
-    }
-
-    /**
      * @Route("/post", name="post.list")
      * @Route("/admin/post/list", name="admin.post.list")
      */
@@ -51,7 +26,6 @@ class PostController extends AbstractController
 
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
         $posts = $postRepository->findAll();
-        dump($posts);
         $cinqPosts = $postRepositoryCustom->findLastFive();
 
         if($routeName == "admin.post.list")

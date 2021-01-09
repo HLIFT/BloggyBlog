@@ -13,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/admin/category", name="category.list")
+     * @Route("/admin/category/list", name="category.list")
      */
-    public function index(): Response
+    public function list(): Response
     {
         $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
         $categories = $categoryRepository->findAll();
