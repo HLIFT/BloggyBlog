@@ -1,29 +1,54 @@
 {% extends 'admin/base.admin.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
+{% block title %}Post{% endblock %}
 
 {% block body %}
-<div class="text-center" style="padding-top : 2%">
-    <h1>Visualisation du post</h1>
+    <h1 class="text-center mt-4 mb-5">Visualisation du post</h1>
     <br>
-    Id du post : {{post.id}}
+    <div class="container">
+        <div class="card text-center w-75 mx-auto">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.description }}</p>
+            <p class="card-text">{{ post.content }}</p>
+            <p>Catégories :
+            {% for category in post.categories %}
+                    <a href="#" class="mx-1">{{ category.name }}</a>
+            {% endfor %}
+            </p>
+            <br>
+            <a href="http://symfony.iut/admin/post/{{ post.slug }}/edit" class="btn btn-secondary btn-outline-warning mx-2">Modifier</a>
+            <a href="http://symfony.iut/admin/post/{{ post.id }}/remove" class="btn btn-secondary btn-outline-warning mx-2">Supprimer</a>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Crée le {{ post.createdAt|date("d/m/Y")}} à {{ post.createdAt|date("H:i")}}</small>
+            <br>
+            <small class="text-muted">Publication le : {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>
+            <br>
+            <small class="text-muted">Dernière mise à jour : {{ post.updatedAt|date("d/m/Y")}} à {{ post.updatedAt|date("H:i")}}</small>
+        </div>
+        </div>
+    </div>
     <br>
-    Titre du post : {{post.title}}
     <br>
-    Contenu du post : {{post.content}}
+    <h2 class="text-left ml-4">Commentaires :<h2>
     <br>
-    Date de publication du post : 
-    {% if post.publishedAt != null %}
-        {{post.publishedAt|date("d/m/Y")}}
-    {% else %}
-        Aucune
-    {% endif %}
-    <br>
-    Catégories :
-    {% for category in post.categories %}
-        {{category.name}}
-    {% endfor %}
-
-
-</div>
+    <div class="mx-4">
+        <div class="row row-cols-4">
+            {% for comment in comments %}
+                {% if comment.valid %}
+                    <div class="col mb-3">
+                        <div class="jumbotron p-3">
+                            <h4 class="">{{ comment.username }}</h4>
+                            <br>
+                            <p class="lead">{{ comment.content }}</p>
+                            <hr class="my-4">
+                            <small class="text-muted" style="font-size:40%">Le {{ comment.createdAt|date("d/m/Y à H:i") }}</small>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
+

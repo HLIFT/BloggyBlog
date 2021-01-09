@@ -80,8 +80,8 @@ class CommentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
-            $id = $comment->getId();
-            return $this->redirectToRoute('post.index');
+            $slug = $post->getSlug();
+            return $this->redirectToRoute('post.show', ['slug' => $slug]);
         }
 
         return $this->render('user/comment/create.html.twig', [
@@ -131,6 +131,6 @@ class CommentController extends AbstractController
         $entityManager->persist($comment);
         $entityManager->flush();
 
-        return $this->redirectToRoute('comment.index');
+        return $this->redirectToRoute('comment.list');
     }
 }

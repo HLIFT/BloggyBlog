@@ -25,8 +25,10 @@ class PostController extends AbstractController
         $routeName = $request->attributes->get('_route');
 
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
-        $posts = $postRepository->findAll();
+        $posts = $postRepositoryCustom->findAllRecent();
         $cinqPosts = $postRepositoryCustom->findLastFive();
+
+        dump($posts);
 
         if($routeName == "admin.post.list")
         {
@@ -87,6 +89,8 @@ class PostController extends AbstractController
         $post = $postRepository->findBy(['slug' => $slug]);
         $post = $post[0];
 
+        $comments = $post->getComments();
+
 
         if(!$post) {
             throw $this->createNotFoundException(
@@ -100,12 +104,14 @@ class PostController extends AbstractController
         {
             return $this->render('admin/post/show.html.twig', [
                 'post' => $post,
+                'comments' => $comments,
             ]);
         }
         else
         {
             return $this->render('user/post/show.html.twig', [
                 'post' => $post,
+                'comments' => $comments,
             ]);
         }       
     }

@@ -12,13 +12,32 @@
     <br>
     Contenu du post : {{post.content}}
     <br>
-    Date de publication du post : 
-    {% if post.publishedAt != null %}
-        {{post.publishedAt|date("d/m/Y")}}
-    {% else %}
-        Aucune
-    {% endif %}
-
+    <br>
+    Créé le : {{post.createdAt|date("d/m/Y")}} à {{post.createdAt|date("H:i")}}
+    <br>
+    Publié le : 
+    {{post.publishedAt|date("d/m/Y")}} à {{post.publishedAt|date("H:i")}}
+    <br>
+    Mis à jour le :
+    {{post.updatedAt|date("d/m/Y")}} à {{post.updatedAt|date("H:i")}}
+    <br>
+    <br>
+    <a href="http://symfony.iut/comment/create/{{post.id}}">Laisser un commentaire</a>
+    <br>
+    <br>
+    <div style="text-align:left">
+        <h2>Commentaires :<h2>
+        <br>
+        {% for comment in comments %}
+            {% if comment.valid %}
+                <h4>{{ comment.username}}</h4>
+                <br>
+                {{comment.content}}
+                <br>
+                <br>
+            {% endif %}
+        {% endfor %}
+    </div>
 
 </div>
 {% endblock %}

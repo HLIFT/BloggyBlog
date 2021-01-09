@@ -1,15 +1,24 @@
 {% extends 'admin/base.admin.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
+{% block title %}Ajouter Post{% endblock %}
+
+{% form_theme formView 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
-    {{ form_start(formView) }}
-
-    <h3>Catégories</h3>
-    <ul class="tags">
-        {% for category in formView.categories %}
-            <li>{{ form_row(category.name) }}</li>
-        {% endfor %}
-    </ul>
-{{ form_end(formView) }}
+	<h3 class="text-center mt-3">Créer un Post</h3>
+	<div class="container">
+        <form name="post" method="post">
+            <div id="post">
+                {{ form_row(formView.title) }}
+                {{ form_row(formView.content) }}
+                {{ form_row(formView.description) }}
+                {{ form_row(formView.publishedAt) }}
+                {{ form_row(formView.categories) }}
+                <div class="form-group">
+                    <button type="submit" id="post_Valider" name="post[Valider]" class="btn btn-secondary btn-outline-warning btn-block w-50 mx-auto">Valider</button>
+                </div>
+            </div>
+            <input type="hidden" id="post__token" name="post[_token]" value="xB2Lu6Bm8824JH3perszZ9xhZN10dGd30MXptwy5RJ8" />
+        </form>
+	</div>
 {% endblock %}

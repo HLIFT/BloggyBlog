@@ -28,10 +28,22 @@ class PostRepository extends ServiceEntityRepository
         $date = new DateTime();
 
        return $this->createQueryBuilder('p')
-            ->andWhere('p.publishedAt <= :date')
+            ->andWhere('p.publishedAt < :date')
             ->setParameter('date', $date)
             ->orderBy('p.publishedAt', 'DESC')
             ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Post[]
+     */
+    public function findAllRecent()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
             ;

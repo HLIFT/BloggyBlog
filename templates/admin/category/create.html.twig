@@ -5,5 +5,15 @@
 {% block body %}
     <h1 class="text-center">Ajouter une catégorie</h1>
     <br>
-    {{ form(formView) }}
+    <div class="container">
+        <form name="category" method="post">
+            <div id="category"
+                {{ form_row(formView.name) }}
+                 <div class="form-group">
+                    <button type="submit" id="category_Valider" name="category[Valider]" class="btn btn-secondary btn-outline-warning btn-block w-50 mx-auto">Valider</button>
+                </div>
+                <input type="hidden" id="category__token" name="category[_token]" value="t5b055TE2R4fLUsY_O04n_nFmcDZH5zyWHssLYbs9h4" />
+            </div>
+        </form>
+    </div>
 {% endblock %}

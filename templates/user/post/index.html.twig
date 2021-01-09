@@ -10,16 +10,16 @@
     <h2>Liste des posts</h2>
     <br>
     {% for post in posts %}
+        Titre du post :
         {{ post.title}}
+        <br>
+        Description :
         {{post.description}}
         <br>
+        Contenu :
         {{post.content}}
         <br>
-        {{post.createdAt|date("d/m/Y")}}
-        <br>
-        {{post.publishedAt|date("d/m/Y")}}
-        <br>
-        {{post.updatedAt|date("d/m/Y")}}
+        <a href="http://symfony.iut/post/{{post.slug}}">Lire la suite</a>
         <br>
         <br>
     {% endfor %}
