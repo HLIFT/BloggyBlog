@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +19,26 @@ class PostRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Post::class);
     }
+
+    /**
+     * @return Post[]
+     */
+    public function findLastFive(): array
+    {
+        $date = new DateTime();
+
+       return $this->createQueryBuilder('p')
+            ->andWhere('p.publishedAt <= :date')
+            ->setParameter('date', $date)
+            ->orderBy('p.publishedAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
+
 
     // /**
     //  * @return Post[] Returns an array of Post objects

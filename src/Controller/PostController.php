@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\PostRepository as PostRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\BrowserKit\Request;
@@ -16,7 +17,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class PostController extends AbstractController
 {
     /**
-     * @Route("/post", name="post.index")
+     * 
      * @Route("/admin/post", name="admin.post.index")
      */
     public function index(HttpFoundationRequest $request): Response
@@ -44,12 +45,14 @@ class PostController extends AbstractController
      * @Route("/post", name="post.list")
      * @Route("/admin/post/list", name="admin.post.list")
      */
-    public function list(HttpFoundationRequest $request): Response
+    public function list(HttpFoundationRequest $request, PostRepository $postRepositoryCustom): Response
     {
         $routeName = $request->attributes->get('_route');
 
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
         $posts = $postRepository->findAll();
+        dump($posts);
+        $cinqPosts = $postRepositoryCustom->findLastFive();
 
         if($routeName == "admin.post.list")
         {
@@ -59,8 +62,8 @@ class PostController extends AbstractController
         }
         else
         {
-            return $this->render('user/post/list.html.twig', [
-                'posts' => $posts,
+            return $this->render('user/post/index.html.twig', [
+                'posts' => $cinqPosts,
             ]);
         }       
     }
