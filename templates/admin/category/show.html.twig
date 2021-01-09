@@ -1,0 +1,41 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block title %}Catégorie{% endblock %}
+
+{% block body %}
+    <h1 class="text-center mt-4 mb-5">Visualisation de la catégorie</h1>
+    <br>
+    <div class="container w-50">
+        <div class="card text-center w-75 mx-auto">
+        <div class="card-body">
+            <h5 class="card-title">{{ category.name }}</h5>
+            <br>
+            <a href="http://symfony.iut/admin/category/{{ category.id }}/edit" class="btn btn-secondary btn-outline-warning mx-2">Modifier</a>
+            <a href="http://symfony.iut/admin/category/{{ category.id }}/remove" class="btn btn-secondary btn-outline-warning mx-2">Supprimer</a>
+        </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <h2 class="text-left ml-4">Posts :<h2>
+    <br>
+    <div class="mx-4">
+        <div class="row row-cols-4">
+            {% for post in posts %}
+                <div class="col mb-3">
+                    <div class="card w-100 mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text" style="font-size:50%">{{ post.description }}</p>
+                        <a href="http://symfony.iut/admin/post/{{ post.slug }}" class="btn btn-secondary btn-outline-warning">Afficher le post</a>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted" style="font-size:50%">Crée le {{ post.createdAt|date("d/m/Y")}} à {{ post.createdAt|date("H:i")}}</small>
+                    </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

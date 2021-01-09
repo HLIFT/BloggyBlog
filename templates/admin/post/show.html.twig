@@ -13,7 +13,7 @@
             <p class="card-text">{{ post.content }}</p>
             <p>Catégories :
             {% for category in post.categories %}
-                    <a href="#" class="mx-1">{{ category.name }}</a>
+                    <a href="http://symfony.iut/admin/category/{{ category.id }}" class="mx-1">{{ category.name }}</a>
             {% endfor %}
             </p>
             <br>

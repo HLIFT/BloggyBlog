@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use PhpParser\Node\Stmt\Catch_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CategoryRepository as CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,10 +16,10 @@ class CategoryController extends AbstractController
     /**
      * @Route("/admin/category/list", name="category.list")
      */
-    public function list(): Response
+    public function list(CategoryRepository $categoryRepositoryCustom): Response
     {
         $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
-        $categories = $categoryRepository->findAll();
+        $categories = $categoryRepositoryCustom->findAllABC();
         return $this->render('admin/category/index.html.twig', [
             'categories' => $categories,
             ]);
@@ -52,6 +53,42 @@ class CategoryController extends AbstractController
     }
 
     /**
+     * @Route("/admin/category/{id}", name="admin.category.show")
+     */
+    public function show(int $id, HttpFoundationRequest $request): Response
+    {
+        
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
+        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+        $category = $categoryRepository->findOneBy(['id' => $id]);
+
+        $posts = $category->getPosts();
+
+
+        if(!$category) {
+            throw $this->createNotFoundException(
+                "Pas de Category trouvé avec l'id ".$id
+            );
+        }
+
+        $routeName = $request->attributes->get('_route');
+
+        if($routeName == "admin.category.show")
+        {
+            return $this->render('admin/category/show.html.twig', [
+                'category' => $category,
+                'posts' => $posts,
+            ]);
+        }
+        else
+        {
+            return $this->render('user/category/show.html.twig', [
+                'category' => $category,
+                'posts' => $posts,
+            ]);
+        }       
+    }
+    /**
      * @Route("/admin/category/{id}/edit", name="category.edit", requirements={"id"="\d+"})
      */
     public function update(int $id, HttpFoundationRequest $request): Response
@@ -78,8 +115,8 @@ class CategoryController extends AbstractController
             $category = $form->getData();
             $entityManager->persist($category);
             $entityManager->flush();
-            
-            return $this->redirectToRoute('category.list', ['id' => $id]);
+            $id = $category->getId();
+            return $this->redirectToRoute('admin.category.show', ['id' => $id]);
         }
 
         return $this->render('admin/category/edit.html.twig', [
