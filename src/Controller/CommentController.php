@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
+use App\Repository\CommentRepository as CommentRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
@@ -16,10 +17,10 @@ class CommentController extends AbstractController
     /**
      * @Route("/admin/comment/list", name="comment.list")
      */
-    public function list(): Response
+    public function list(CommentRepository $commentRespositoryCustom): Response
     {
         $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
-        $comments = $commentRepository->findAll();
+        $comments = $commentRespositoryCustom->findAllRecent();
         return $this->render('admin/comment/index.html.twig', [
             'comments' => $comments,
             ]);
@@ -28,7 +29,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/comment/{idPost}", name="comment.show", requirements={"id"="\d+"})
      */
-    public function show($idPost): Response
+    public function show(int $idPost): Response
     {
         // On récupère le `repository` en rapport avec l'entity `Post` 
         $postRepository = $this->getDoctrine()->getRepository(Post::class);

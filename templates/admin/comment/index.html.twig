@@ -3,22 +3,40 @@
 {% block title %}Liste des commentaires{% endblock %}
 
 {% block body %}
-    <h1 class="text-center">Liste des commentaires</h1>
+    <h1 class="text-center my-4">Liste des commentaires</h1>
     <br>
-    {% for comment in comments %}
-        {{ comment.username}}
-        <br>
-        {{comment.content}}
-        <br>
-        {% if comment.valid == true %}
-            true
-        {% else %}
-            false
-        {% endif %}
-        <br>
-        <a href="http://symfony.iut/admin/comment/{{comment.id}}/validate">Valider le commentaire</a>
-        <a href="http://symfony.iut/admin/comment/{{comment.id}}/remove">Supprimer ce commentaire</a>
-        <br>
-        <br>
-    {% endfor %}
+    <div class="mx-4">
+        <div class="row row-cols-4">
+        {% for comment in comments %}
+            <div class="col mb-3">
+                <div class="jumbotron p-3">
+                    <h4 class="">{{ comment.username }}</h4>
+                    <br>
+                    <p class="lead">{{ comment.content }}</p>
+                    {% if comment.valid %}
+                        <p class="text-success">Validé</p>
+                        <div class="container">
+                            <div class="row justify-content-md-center">
+                                <div class="col-md-auto"><a href="http://symfony.iut/admin/post/{{ comment.post.slug }}" class="btn btn-secondary btn-outline-warning text-center">Voir le post</a></div>
+                                <div class="col-md-auto"><a href="http://symfony.iut/admin/comment/{{ comment.id }}/remove"  class="btn btn-secondary btn-outline-warning text-center">Supprimer</a></div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-danger">En attente de validation</p>
+                        <div class="container">
+                            <div class="row justify-content-md-center">
+                                <div class="col-md-auto"><a href="http://symfony.iut/admin/post/{{ comment.post.slug }}" class="btn btn-secondary btn-outline-warning">Voir le post</a></div>
+                                <div class="col-md-auto"><a href="http://symfony.iut/admin/comment/{{ comment.id }}/remove"  class="btn btn-secondary btn-outline-warning text-center">Supprimer</a></div>
+                            </div>
+                        </div>
+                        <a href="http://symfony.iut/admin/comment/{{ comment.id }}/validate" class="btn btn-secondary btn-outline-warning d-block mx-auto w-75 mt-2">Valider le commentaire</a>
+                        
+                    {% endif %}
+                    <hr class="my-4">
+                    <small class="text-muted" style="font-size:80%">Le {{ comment.createdAt|date("d/m/Y à H:i") }}</small>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 {% endblock %}
