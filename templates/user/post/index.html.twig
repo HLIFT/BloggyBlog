@@ -2,11 +2,11 @@
 
 {% block title %}Homepage{% endblock %}
 
-{% block body %}
+{% block main %}
 <div class="text-center" style="padding-top:2%">
     <h1>Accueil</h1>
 </div>
-    <div class="container text-center w-50">
+    <div class="container text-center">
         {% for post in posts %}
             <div class="col my-3">
                 <div class="card">
@@ -28,5 +28,6 @@
 {% endblock %}
 
 {% block sidebar %}
-    {{ parent() }}
+    {{ sidebar() }}
 {% endblock %}
+

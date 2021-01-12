@@ -34,11 +34,12 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * @return Category[]
      */
-    public function findAllWithPost()
+    public function findAllWithPost(): array
     {
         return $this->createQueryBuilder('c')
-            ->select('count(c.posts->getId()) as p')
-            ->andWhere('p > 0')
+            ->join('c.posts', 'p')
+            ->select('c.id', 'c.name')
+            ->andWhere('p.id > 0')
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult()

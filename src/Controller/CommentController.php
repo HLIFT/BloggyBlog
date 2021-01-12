@@ -159,25 +159,4 @@ class CommentController extends AbstractController
 
         return $this->redirectToRoute('comment.list');
     }
-
-    public function recentComments(int $max = 5, CommentRepository $commentRepositoryCustom, CategoryRepository $categoryRepositoryCustom): Response
-    {
-        $comments = $commentRepositoryCustom->findCommentRecent($max);
-        $categories = $categoryRepositoryCustom->findAllABC();
-        $nbPost=0;
-        foreach($categories as $category)
-        {
-            foreach($category->getPosts() as $post)
-            {
-                $nbPost += 1;
-            }
-            dump($category->getPosts());
-        }
-        dump($categories);
-
-        return $this->render('user/comment/_recent_comments.html.twig', [
-            'comments' => $comments,
-            'categories' => $categories,
-        ]);
-    }
 }

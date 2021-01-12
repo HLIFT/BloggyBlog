@@ -1,0 +1,22 @@
+<h4 class="mt-4">Catégories</h4>
+
+<div class="list-group">
+
+    {% for category in categories %}
+
+        <a href="{{ path('category.show', {id: category.id}) }}" class="list-group-item list-group-item-action">{{ category.name }}</a>
+
+    {% endfor %}
+
+</div>
+
+<h4 class="mt-4">Derniers commentaires</h4>
+
+<div class="list-group">
+    {% for comment in comments %}
+
+        <a href="{{ path('comment.show', {idComment: comment.id}) }}" class="list-group-item list-group-item-action">{{ comment.username }}</a>
+
+    {% endfor %}
+</div>
+
