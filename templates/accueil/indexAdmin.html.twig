@@ -1,20 +1,15 @@
 {% extends 'admin/base.admin.html.twig' %}
 
-{% block title %}Hello AccueilController!{% endblock %}
+{% block title %}Accueil Admin{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello ! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/symfony/src/Controller/AccueilController.php'|file_link(0) }}">src/Controller/AccueilController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/symfony/templates/accueil/index.html.twig'|file_link(0) }}">templates/accueil/index.html.twig</a></code></li>
-    </ul>
+<div class="container text-center">
+    <h1 class="my-4">Bienvenue dans la partie Administration</h1>
+    <p style="font-size:150%">Vous pouvez désormais effectuer la gestion de <b class="text-info">BloggyBlog</b></p>
+    <p style="font-size:120%">Il vous suffit d'utiliser les menus de la barre de navigation</p>
 </div>
+   
+
+
 {% endblock %}
