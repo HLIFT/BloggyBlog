@@ -36,14 +36,35 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function findAllWithPost(): array
     {
+
         return $this->createQueryBuilder('c')
             ->join('c.posts', 'p')
             ->select('c.id', 'c.name')
             ->andWhere('p.id > 0')
             ->orderBy('c.name', 'ASC')
+            ->distinct()
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    /**
+     * @return Category[]
+     */
+    public function findNbPosts(int $id)
+    {
+
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT COUNT(post_id) as nbposts FROM post_category
+            WHERE category_id = :id
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
     }
 
     // /**

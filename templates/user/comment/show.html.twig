@@ -1,2 +1,42 @@
-{{ comment.id }}
-{{ post.id }}
+{% extends "user/base.html.twig" %}
+
+{% block body %}
+<h1 class="text-center mt-4 mb-4">Post</h1>
+    <br>
+    <div class="container mb-4">
+        <div class="card text-center w-75 mx-auto">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <hr>
+            <p class="card-text font-italic">{{ post.description | nl2br }}</p>
+            <hr>
+            <p class="card-text">{{ post.content | nl2br }}</p>
+            <hr>
+            <p>Catégories :
+            {% for category in post.categories %}
+                    <a href="http://symfony.iut/category/{{ category.id }}" class="mx-1">{{ category.name }}</a>
+            {% endfor %}
+            </p>
+            <hr>
+            <a href="http://symfony.iut/comment/create/{{ post.id }}" class="btn btn-info mx-2">Laisser un commentaire</a>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Publié le : {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>
+            <br>
+            <small class="text-muted">Dernière mise à jour : {{ post.updatedAt|date("d/m/Y")}} à {{ post.updatedAt|date("H:i")}}</small>
+        </div>
+        </div>
+    </div>
+
+<h2 class="text-center mt-5 mb-4">Commentaire de {{ comment.username }}</h2>
+<div class="mx-4">
+    <div class="jumbotron p-3">
+        <h4 class="">{{ comment.username }}</h4>
+        <br>
+        <p class="lead">{{ comment.content }}</p>
+        <hr class="mt-4">
+        <small class="text-muted align-middle">Le {{ comment.createdAt|date("d/m/Y à H:i") }}</small>
+    </div>
+</div>
+
+{% endblock %}

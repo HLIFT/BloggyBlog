@@ -2,10 +2,13 @@
 
 namespace App\Twig;
 
+use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
+use phpDocumentor\Reflection\Types\Integer;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class SidebarExtension extends AbstractExtension
@@ -35,7 +38,8 @@ class SidebarExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('sidebar', [$this, 'getSidebar'], ['is_safe' => ['html']])
+            new TwigFunction('sidebar', [$this, 'getSidebar'], ['is_safe' => ['html']]),
+            new TwigFunction('nbPosts', [$this, 'getNbPosts'])
         ];
     }
 
@@ -49,5 +53,12 @@ class SidebarExtension extends AbstractExtension
             'comments' => $comments,
             'categories' => $categories
         ]);
+    }
+
+    public function getNbPosts($id)
+    {
+        $nbPosts = $this->categoryRepository->findNbPosts($id);
+
+        return $nbPosts;
     }
 }

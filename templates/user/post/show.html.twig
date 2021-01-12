@@ -1,9 +1,9 @@
 {% extends 'user/base.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
+{% block title %}Post{% endblock %}
 
 {% block body %}
-<h1 class="text-center mt-4 mb-5">Visualisation du post</h1>
+    <h1 class="text-center mt-4 mb-5">Visualisation du post</h1>
     <br>
     <div class="container">
         <div class="card text-center w-75 mx-auto">
@@ -16,14 +16,17 @@
             <hr>
             <p>Catégories :
             {% for category in post.categories %}
-                    <a href="http://symfony.iut/category/{{ category.id }}" class="mx-1">{{ category.name }}</a>
+                    <a href="http://symfony.iut/admin/category/{{ category.id }}" class="mx-1">{{ category.name }}</a>
             {% endfor %}
             </p>
             <hr>
-            <a href="http://symfony.iut/comment/create/{{ post.id }}" class="btn btn-info mx-2">Laisser un commentaire</a>
+            <a href="http://symfony.iut/admin/post/{{ post.slug }}/edit" class="btn btn-info mx-2">Modifier</a>
+            <a href="http://symfony.iut/admin/post/{{ post.id }}/remove" class="btn btn-info mx-2">Supprimer</a>
         </div>
         <div class="card-footer">
-            <small class="text-muted">Publié le : {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>
+            <small class="text-muted">Crée le {{ post.createdAt|date("d/m/Y")}} à {{ post.createdAt|date("H:i")}}</small>
+            <br>
+            <small class="text-muted">Publication le : {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>
             <br>
             <small class="text-muted">Dernière mise à jour : {{ post.updatedAt|date("d/m/Y")}} à {{ post.updatedAt|date("H:i")}}</small>
         </div>

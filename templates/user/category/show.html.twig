@@ -1,0 +1,27 @@
+{% extends "user/base.html.twig" %}
+
+{% block body %}
+ <h1 class="text-center mt-4 mb-5">Visualisation de la catégorie <p class="text-info">{{ category.name }}</p></h1>
+<h2 class="text-left ml-4">Posts :<h2>
+<br>
+<div class="mx-4">
+    <div class="row row-cols-2">
+        {% for post in posts %}
+            {% if post.publishedAt < date() %}
+                <div class="col mb-3">
+                    <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text" style="font-size:50%">{{ post.description }}</p>
+                        <a href="http://symfony.iut/post/{{ post.slug }}" class="btn btn-info">Afficher le post</a>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted" style="font-size:40%">Publié le {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>
+                    </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

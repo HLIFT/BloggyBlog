@@ -36,7 +36,7 @@
                     <button type="submit" id="post_Valider" name="post[Valider]" class="btn btn-info btn-block w-50 mx-auto">Valider</button>
                 </div>
             </div>
-            <input type="hidden" id="comment__token" name="comment[_token]" value="57aWE0O21uFN56T7BjZkeXsjxCFHAp3G4SwA_lM9vKc" />
+            {{ form_widget(formView._token) }}
         </form>
     </div>
 {% endblock %}

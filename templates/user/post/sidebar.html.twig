@@ -4,7 +4,12 @@
 
     {% for category in categories %}
 
-        <a href="{{ path('category.show', {id: category.id}) }}" class="list-group-item list-group-item-action">{{ category.name }}</a>
+        <a href="{{ path('category.show', {id: category.id}) }}" class="list-group-item list-group-item-action">
+            {{ category.name }}  -  
+            {% for nbposts in nbPosts(category.id) %}
+                {{ nbposts.nbposts }} post(s)
+            {% endfor %}
+        </a>
 
     {% endfor %}
 
@@ -14,9 +19,13 @@
 
 <div class="list-group">
     {% for comment in comments %}
-
-        <a href="{{ path('comment.show', {idComment: comment.id}) }}" class="list-group-item list-group-item-action">{{ comment.username }}</a>
-
+        {% if comment.valid %}
+            <a href="{{ path('comment.show', {idComment: comment.id}) }}" class="list-group-item list-group-item-action">
+                <b>{{ comment.username }}</b><br>
+                {{ comment.content |u.truncate(75, '...')}}
+            </a>
+        {% endif %}
     {% endfor %}
 </div>
+
 

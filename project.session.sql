@@ -1,0 +1,1 @@
+SELECT COUNT(post_id) as nbposts FROM post_category WHERE category_id = 10
