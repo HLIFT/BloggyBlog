@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -26,6 +27,33 @@ class CommentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function findPostRecent(Post $post)
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.createdAt', 'DESC')
+            ->andWhere('c.post = :post')
+            ->setParameter('post', $post)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function findCommentRecent(int $max)
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.createdAt', 'DESC')
+            ->setMaxResults($max)
             ->getQuery()
             ->getResult()
             ;

@@ -54,6 +54,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/admin/category/{id}", name="admin.category.show")
+     * @Route("/category/{id}/show", name="category.show")
      */
     public function show(int $id, HttpFoundationRequest $request): Response
     {
@@ -145,5 +146,15 @@ class CategoryController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('category.list');
+    }
+
+    public function categories(CategoryRepository $categoryRepositoryCustom): Response
+    {
+        $categories = $categoryRepositoryCustom->findAllWithPost();
+        dump($categories);
+
+        return $this->render('user/comment/_recent_comments.html.twig', [
+            'categories' => $categories
+        ]);
     }
 }

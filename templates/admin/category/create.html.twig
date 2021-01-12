@@ -10,9 +10,9 @@
             <div id="category"
                 {{ form_row(formView.name) }}
                  <div class="form-group">
-                    <button type="submit" id="category_Valider" name="category[Valider]" class="btn btn-secondary btn-outline-warning btn-block w-50 mx-auto">Valider</button>
+                    <button type="submit" id="category_Valider" name="category[Valider]" class="btn btn-info btn-block w-50 mx-auto">Valider</button>
                 </div>
-                <input type="hidden" id="category__token" name="category[_token]" value="t5b055TE2R4fLUsY_O04n_nFmcDZH5zyWHssLYbs9h4" />
+                {{ form_widget(formView._token) }} 
             </div>
         </form>
     </div>

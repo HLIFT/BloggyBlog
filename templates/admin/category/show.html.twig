@@ -10,8 +10,8 @@
         <div class="card-body">
             <h5 class="card-title">{{ category.name }}</h5>
             <br>
-            <a href="http://symfony.iut/admin/category/{{ category.id }}/edit" class="btn btn-secondary btn-outline-warning mx-2">Modifier</a>
-            <a href="http://symfony.iut/admin/category/{{ category.id }}/remove" class="btn btn-secondary btn-outline-warning mx-2">Supprimer</a>
+            <a href="http://symfony.iut/admin/category/{{ category.id }}/edit" class="btn btn-info mx-2">Modifier</a>
+            <a href="http://symfony.iut/admin/category/{{ category.id }}/remove" class="btn btn-info mx-2">Supprimer</a>
         </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text" style="font-size:50%">{{ post.description }}</p>
-                        <a href="http://symfony.iut/admin/post/{{ post.slug }}" class="btn btn-secondary btn-outline-warning">Afficher le post</a>
+                        <a href="http://symfony.iut/admin/post/{{ post.slug }}" class="btn btn-info">Afficher le post</a>
                     </div>
                     <div class="card-footer">
                         <small class="text-muted" style="font-size:50%">Crée le {{ post.createdAt|date("d/m/Y")}} à {{ post.createdAt|date("H:i")}}</small>

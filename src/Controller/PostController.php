@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository as PostRepository;
+use App\Repository\CommentRepository as CommentRepository;
 use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
@@ -20,26 +23,30 @@ class PostController extends AbstractController
      * @Route("/post", name="post.list")
      * @Route("/admin/post/list", name="admin.post.list")
      */
-    public function list(HttpFoundationRequest $request, PostRepository $postRepositoryCustom): Response
+    public function list(HttpFoundationRequest $request, PostRepository $postRepositoryCustom, PaginatorInterface $paginator): Response
     {
         $routeName = $request->attributes->get('_route');
-
-        $postRepository = $this->getDoctrine()->getRepository(Post::class);
-        $posts = $postRepositoryCustom->findAllRecent();
+        $allPosts = $postRepositoryCustom->findAllRecent();
         $cinqPosts = $postRepositoryCustom->findLastFive();
 
-        dump($posts);
+        $donnees = $postRepositoryCustom->findAllRecentPublished();
+        $posts = $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1),
+            5
+        );
+
 
         if($routeName == "admin.post.list")
         {
             return $this->render('admin/post/list.html.twig', [
-                'posts' => $posts,
+                'posts' => $allPosts,
             ]);
         }
         else
         {
             return $this->render('user/post/index.html.twig', [
-                'posts' => $cinqPosts,
+                'posts' => $posts,
             ]);
         }       
     }
@@ -81,7 +88,7 @@ class PostController extends AbstractController
      * @Route("/post/{slug}", name="post.show")
      * @Route("/admin/post/{slug}", name="admin.post.show")
      */
-    public function show(String $slug, HttpFoundationRequest $request): Response
+    public function show(String $slug, HttpFoundationRequest $request, CommentRepository $commentRepository): Response
     {
         // On récupère le `repository` en rapport avec l'entity `Post` 
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
@@ -89,7 +96,7 @@ class PostController extends AbstractController
         $post = $postRepository->findBy(['slug' => $slug]);
         $post = $post[0];
 
-        $comments = $post->getComments();
+        $comments = $commentRepository->findPostRecent($post);
 
 
         if(!$post) {

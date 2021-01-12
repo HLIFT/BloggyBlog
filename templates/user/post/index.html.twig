@@ -1,27 +1,32 @@
 {% extends 'user/base.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
+{% block title %}Homepage{% endblock %}
 
 {% block body %}
 <div class="text-center" style="padding-top:2%">
     <h1>Accueil</h1>
 </div>
+    <div class="container text-center w-50">
+        {% for post in posts %}
+            <div class="col my-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text font-italic">{{ post.description | nl2br }}</p>
+                        <a href="http://symfony.iut/post/{{ post.slug }}" class="btn btn-info">Afficher le post</a>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Publié le {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+<div class="mt-3">
+    {{ knp_pagination_render(posts) }}       
+</div>
+{% endblock %}
 
-    <h2>Liste des posts</h2>
-    <br>
-    {% for post in posts %}
-        Titre du post :
-        {{ post.title}}
-        <br>
-        Description :
-        {{post.description}}
-        <br>
-        Contenu :
-        {{post.content}}
-        <br>
-        <a href="http://symfony.iut/post/{{post.slug}}">Lire la suite</a>
-        <br>
-        <br>
-    {% endfor %}
-
+{% block sidebar %}
+    {{ parent() }}
 {% endblock %}

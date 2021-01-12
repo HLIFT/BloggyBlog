@@ -15,10 +15,10 @@
                 {{ form_row(formView.publishedAt) }}
                 {{ form_row(formView.categories) }}
                 <div class="form-group">
-                    <button type="submit" id="post_Valider" name="post[Valider]" class="btn btn-secondary btn-outline-warning btn-block w-50 mx-auto">Valider</button>
+                    <button type="submit" id="post_Valider" name="post[Valider]" class="btn btn-info btn-block w-50 mx-auto">Valider</button>
                 </div>
+                {{ form_widget(formView._token) }} 
             </div>
-            <input type="hidden" id="post__token" name="post[_token]" value="xB2Lu6Bm8824JH3perszZ9xhZN10dGd30MXptwy5RJ8" />
         </form>
 	</div>
 {% endblock %}

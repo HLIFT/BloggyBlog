@@ -17,19 +17,19 @@
                         <p class="text-success">Validé</p>
                         <div class="container">
                             <div class="row justify-content-md-center">
-                                <div class="col-md-auto"><a href="http://symfony.iut/admin/post/{{ comment.post.slug }}" class="btn btn-secondary btn-outline-warning text-center">Voir le post</a></div>
-                                <div class="col-md-auto"><a href="http://symfony.iut/admin/comment/{{ comment.id }}/remove"  class="btn btn-secondary btn-outline-warning text-center">Supprimer</a></div>
+                                <div class="col-md-auto"><a href="http://symfony.iut/admin/post/{{ comment.post.slug }}" class="btn btn-info text-center">Voir le post</a></div>
+                                <div class="col-md-auto"><a href="http://symfony.iut/admin/comment/{{ comment.id }}/remove"  class="btn btn-info text-center">Supprimer</a></div>
                             </div>
                         </div>
                     {% else %}
                         <p class="text-danger">En attente de validation</p>
                         <div class="container">
                             <div class="row justify-content-md-center">
-                                <div class="col-md-auto"><a href="http://symfony.iut/admin/post/{{ comment.post.slug }}" class="btn btn-secondary btn-outline-warning">Voir le post</a></div>
-                                <div class="col-md-auto"><a href="http://symfony.iut/admin/comment/{{ comment.id }}/remove"  class="btn btn-secondary btn-outline-warning text-center">Supprimer</a></div>
+                                <div class="col-md-auto"><a href="http://symfony.iut/admin/post/{{ comment.post.slug }}" class="btn btn-info">Voir le post</a></div>
+                                <div class="col-md-auto"><a href="http://symfony.iut/admin/comment/{{ comment.id }}/remove"  class="btn btn-info text-center">Supprimer</a></div>
                             </div>
                         </div>
-                        <a href="http://symfony.iut/admin/comment/{{ comment.id }}/validate" class="btn btn-secondary btn-outline-warning d-block mx-auto w-75 mt-2">Valider le commentaire</a>
+                        <a href="http://symfony.iut/admin/comment/{{ comment.id }}/validate" class="btn btn-info d-block mx-auto w-75 mt-2">Valider le commentaire</a>
                         
                     {% endif %}
                     <hr class="my-4">

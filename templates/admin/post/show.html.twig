@@ -9,16 +9,19 @@
         <div class="card text-center w-75 mx-auto">
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{ post.description }}</p>
-            <p class="card-text">{{ post.content }}</p>
+            <hr>
+            <p class="card-text font-italic">{{ post.description | nl2br }}</p>
+            <hr>
+            <p class="card-text">{{ post.content | nl2br }}</p>
+            <hr>
             <p>Catégories :
             {% for category in post.categories %}
                     <a href="http://symfony.iut/admin/category/{{ category.id }}" class="mx-1">{{ category.name }}</a>
             {% endfor %}
             </p>
-            <br>
-            <a href="http://symfony.iut/admin/post/{{ post.slug }}/edit" class="btn btn-secondary btn-outline-warning mx-2">Modifier</a>
-            <a href="http://symfony.iut/admin/post/{{ post.id }}/remove" class="btn btn-secondary btn-outline-warning mx-2">Supprimer</a>
+            <hr>
+            <a href="http://symfony.iut/admin/post/{{ post.slug }}/edit" class="btn btn-info mx-2">Modifier</a>
+            <a href="http://symfony.iut/admin/post/{{ post.id }}/remove" class="btn btn-info mx-2">Supprimer</a>
         </div>
         <div class="card-footer">
             <small class="text-muted">Crée le {{ post.createdAt|date("d/m/Y")}} à {{ post.createdAt|date("H:i")}}</small>

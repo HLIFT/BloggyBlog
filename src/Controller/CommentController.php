@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
+use App\Repository\CategoryRepository as CategoryRepository;
 use App\Repository\CommentRepository as CommentRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,26 +28,50 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/comment/{idPost}", name="comment.show", requirements={"id"="\d+"})
+     * @Route("/comment/{slug}", name="comment.post.show")
      */
-    public function show(int $idPost): Response
+    public function showPostComment(String $slug): Response
     {
         // On récupère le `repository` en rapport avec l'entity `Post` 
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
         // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
-        $post = $postRepository->find($idPost);
+        $post = $postRepository->findBy(['slug' => $slug]);
 
         if(!$post) {
             throw $this->createNotFoundException(
-                "Pas de Post trouvé avec l'id ".$idPost
+                "Pas de Post trouvé avec le slug ".$slug
             );
         }
 
         $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
         $comments = $commentRepository->findBy(['post' => $post]);
 
-        return $this->render('user/comment/show.html.twig', [
+        return $this->render('user/comment/show.post.html.twig', [
             'comments' => $comments,
+            'post' => $post,
+        ]);
+    }
+
+    /**
+     * @Route("/comment/{idComment}/show", name="comment.show", requirements={"idComment"="\d+"})
+     */
+    public function showComment(int $idComment): Response
+    {
+        // On récupère le `repository` en rapport avec l'entity `Post` 
+        $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
+        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+        $comment = $commentRepository->find($idComment);
+
+        if(!$comment) {
+            throw $this->createNotFoundException(
+                "Pas de Comment trouvé avec l'id ".$idComment
+            );
+        }
+
+        $post = $comment->getPost();
+
+        return $this->render('user/comment/show.html.twig', [
+            'comment' => $comment,
             'post' => $post,
         ]);
     }
@@ -133,5 +158,26 @@ class CommentController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('comment.list');
+    }
+
+    public function recentComments(int $max = 5, CommentRepository $commentRepositoryCustom, CategoryRepository $categoryRepositoryCustom): Response
+    {
+        $comments = $commentRepositoryCustom->findCommentRecent($max);
+        $categories = $categoryRepositoryCustom->findAllABC();
+        $nbPost=0;
+        foreach($categories as $category)
+        {
+            foreach($category->getPosts() as $post)
+            {
+                $nbPost += 1;
+            }
+            dump($category->getPosts());
+        }
+        dump($categories);
+
+        return $this->render('user/comment/_recent_comments.html.twig', [
+            'comments' => $comments,
+            'categories' => $categories,
+        ]);
     }
 }

@@ -3,25 +3,40 @@
 {% block title %}Ajouter un commentaire{% endblock %}
 
 {% block body %}
-    <h1 class="text-center">Ajouter un commentaire</h1>
+    <h1 class="text-center mt-4">Ajouter un commentaire</h1>
     <br>
-    <h2>Post :</h2>
+    <h2 class="text-left mt-4 ml-5">Post :</h2>
     <br>
-    Titre : {{post.title}}
-    <br>
-    Description : {{post.description}}
-    <br>
-    Contenu : {{post.content}}
-    <br>
-    Date de publication : 
-    {% if post.publishedAt != null %}
-        {{post.publishedAt|date("d/m/Y")}}
-    {% else %}
-        Aucune
-    {% endif %}
-    <br>
-    <br>
-    <h2>Commentaire :</h2>
-    <br>
-    {{ form(formView) }}
+    <div class="">
+        <div class="card text-center w-50 ml-5">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.description }}</p>
+            <p class="card-text">{{ post.content }}</p>
+            <p>Catégories :
+            {% for category in post.categories %}
+                    <a href="http://symfony.iut/category/{{ category.id }}" class="mx-1">{{ category.name }}</a>
+            {% endfor %}
+            </p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Publié le : {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>
+            <br>
+            <small class="text-muted">Dernière mise à jour : {{ post.updatedAt|date("d/m/Y")}} à {{ post.updatedAt|date("H:i")}}</small>
+        </div>
+        </div>
+    </div>
+    <h2 class="text-left my-4 ml-5">Commentaire :</h2>
+    <div class="container w-50">
+        <form name="comment" method="post">
+            <div id="comment">
+                {{ form_row(formView.username) }}
+                {{ form_row(formView.content) }}
+                <div class="form-group">
+                    <button type="submit" id="post_Valider" name="post[Valider]" class="btn btn-info btn-block w-50 mx-auto">Valider</button>
+                </div>
+            </div>
+            <input type="hidden" id="comment__token" name="comment[_token]" value="57aWE0O21uFN56T7BjZkeXsjxCFHAp3G4SwA_lM9vKc" />
+        </form>
+    </div>
 {% endblock %}
