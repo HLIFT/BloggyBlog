@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use App\Entity\Post;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,6 +28,24 @@ class CommentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function findAllRecentValid(int $max)
+    {
+        $date =new DateTime();
+
+        return $this->createQueryBuilder('c')
+            ->where('c.createdAt < :date')
+            ->andWhere('c.valid = true')
+            ->setParameter('date', $date)
+            ->orderBy('c.createdAt', 'DESC')
+            ->setMaxResults($max)
             ->getQuery()
             ->getResult()
             ;

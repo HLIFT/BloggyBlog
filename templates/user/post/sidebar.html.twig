@@ -5,7 +5,7 @@
     {% for category in categories %}
         {% if getNbPosts(category.id) > 0 %}
             <a href="{{ path('category.show', {id: category.id}) }}" class="list-group-item list-group-item-action">
-            {{ category.name }}  -  {{ getNbPosts(category.id) }} post(s)
+            {{ category.name }}  -  ({{ getNbPosts(category.id) }})
             </a>
         {% endif %}
     {% endfor %}

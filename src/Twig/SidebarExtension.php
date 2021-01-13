@@ -46,7 +46,7 @@ class SidebarExtension extends AbstractExtension
 
     public function getSidebar(): string
     {
-        $comments = $this->commentRepository->findCommentRecent(5);
+        $comments = $this->commentRepository->findAllRecentValid(5);
 
         $categories = $this->categoryRepository->findAllWithPost();
 

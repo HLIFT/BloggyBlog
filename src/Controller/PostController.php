@@ -27,7 +27,6 @@ class PostController extends AbstractController
     {
         $routeName = $request->attributes->get('_route');
         $allPosts = $postRepositoryCustom->findAllRecent();
-        $cinqPosts = $postRepositoryCustom->findLastFive();
 
         $donnees = $postRepositoryCustom->findAllRecentPublished();
         $posts = $paginator->paginate(
