@@ -67,6 +67,7 @@ class Post
 
     /**
      * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="posts")
+     * @Assert\NotBlank()
      */
     private $categories;
 
