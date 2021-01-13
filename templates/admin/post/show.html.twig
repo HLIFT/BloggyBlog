@@ -10,9 +10,9 @@
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
             <hr>
-            <p class="card-text font-italic">{{ post.description | nl2br }}</p>
+            <p class="card-text font-italic">{{ post.description|nl2br }}</p>
             <hr>
-            <p class="card-text">{{ post.content | nl2br }}</p>
+            <p class="card-tex text-justify">{{ post.content|nl2br }}</p>
             <hr>
             <p>Catégories :
             {% for category in post.categories %}

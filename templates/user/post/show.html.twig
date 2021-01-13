@@ -5,14 +5,14 @@
 {% block body %}
     <h1 class="text-center mt-4 mb-5">Visualisation du post</h1>
     <br>
-    <div class="container">
-        <div class="card text-center w-75 mx-auto">
+    <div class="container text-center">
+        <div class="card w-75 mx-auto">
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
             <hr>
-            <p class="card-text font-italic">{{ post.description | nl2br }}</p>
+            <p class="card-text font-italic">{{ post.description|nl2br }}</p>
             <hr>
-            <p class="card-text">{{ post.content | nl2br }}</p>
+            <p class="card-text text-justify">{{ post.content|nl2br }}</p>
             <hr>
             <p>Catégories :
             {% for category in post.categories %}
@@ -22,7 +22,7 @@
             <hr>
             <a href="http://symfony.iut/comment/create/{{ post.id }}" class="btn btn-info mx-2">Laisser un commentaire</a>
         </div>
-        <div class="card-footer">
+        <div class="card-footer text-center">
             <small class="text-muted">Crée le {{ post.createdAt|date("d/m/Y")}} à {{ post.createdAt|date("H:i")}}</small>
             <br>
             <small class="text-muted">Publication le : {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>

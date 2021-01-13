@@ -18,7 +18,11 @@
             {% endfor %}
             </p>
             <hr>
-            <a href="http://symfony.iut/comment/create/{{ post.id }}" class="btn btn-info mx-2">Laisser un commentaire</a>
+            <div class="mx-auto">
+                <a href="http://symfony.iut/post/{{ post.slug }}" class="btn btn-info mx-2 my-2">Voir le post</a>
+                <br>
+                <a href="http://symfony.iut/comment/create/{{ post.id }}" class="btn btn-info mx-2 my-2">Laisser un commentaire</a>
+            </div>
         </div>
         <div class="card-footer">
             <small class="text-muted">Publié le : {{ post.publishedAt|date("d/m/Y")}} à {{ post.publishedAt|date("H:i")}}</small>

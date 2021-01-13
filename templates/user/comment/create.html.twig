@@ -4,12 +4,12 @@
 
 {% block body %}
     <h1 class="text-center mt-4 mb-5">Ajouter un commentaire</h1>
-    <div class="container mx-auto mb-5">
-        <div class="card text-center w-50 mx-auto">
+    <div class="mx-auto mb-5">
+        <div class="card text-center w-75 mx-auto">
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{ post.description }}</p>
-            <p class="card-text">{{ post.content }}</p>
+            <p class="card-text">{{ post.description|nl2br }}</p>
+            <p class="card-text">{{ post.content|nl2br }}</p>
             <p>Catégories :
             {% for category in post.categories %}
                     <a href="http://symfony.iut/category/{{ category.id }}" class="mx-1">{{ category.name }}</a>
@@ -24,7 +24,7 @@
         </div>
     </div>
     <h2 class="text-center my-4 mx-auto">Commentaire :</h2>
-    <div class="container w-50"> 
+    <div class="container w-75"> 
         <form name="comment" method="post">
             <div id="comment">
                 {{ form_row(formView.username) }}

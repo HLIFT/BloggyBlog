@@ -19,7 +19,7 @@
         {% if comment.valid %}
             <a href="{{ path('comment.show', {idComment: comment.id}) }}" class="list-group-item list-group-item-action">
                 <b>{{ comment.username }}</b><br>
-                {{ comment.content |u.truncate(75, '...')}}
+                {{ comment.content|u.truncate(75, '...')}}
             </a>
         {% endif %}
     {% endfor %}
