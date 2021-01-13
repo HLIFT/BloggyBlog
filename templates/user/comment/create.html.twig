@@ -3,12 +3,9 @@
 {% block title %}Ajouter un commentaire{% endblock %}
 
 {% block body %}
-    <h1 class="text-center mt-4">Ajouter un commentaire</h1>
-    <br>
-    <h2 class="text-left mt-4 ml-5">Post :</h2>
-    <br>
-    <div class="">
-        <div class="card text-center w-50 ml-5">
+    <h1 class="text-center mt-4 mb-5">Ajouter un commentaire</h1>
+    <div class="container mx-auto mb-5">
+        <div class="card text-center w-50 mx-auto">
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
             <p class="card-text">{{ post.description }}</p>
@@ -26,8 +23,8 @@
         </div>
         </div>
     </div>
-    <h2 class="text-left my-4 ml-5">Commentaire :</h2>
-    <div class="container w-50">
+    <h2 class="text-center my-4 mx-auto">Commentaire :</h2>
+    <div class="container w-50"> 
         <form name="comment" method="post">
             <div id="comment">
                 {{ form_row(formView.username) }}

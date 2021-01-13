@@ -20,8 +20,7 @@
             {% endfor %}
             </p>
             <hr>
-            <a href="http://symfony.iut/admin/post/{{ post.slug }}/edit" class="btn btn-info mx-2">Modifier</a>
-            <a href="http://symfony.iut/admin/post/{{ post.id }}/remove" class="btn btn-info mx-2">Supprimer</a>
+            <a href="http://symfony.iut/comment/create/{{ post.id }}" class="btn btn-info mx-2">Laisser un commentaire</a>
         </div>
         <div class="card-footer">
             <small class="text-muted">Crée le {{ post.createdAt|date("d/m/Y")}} à {{ post.createdAt|date("H:i")}}</small>
@@ -37,7 +36,7 @@
     <h2 class="text-left ml-4">Commentaires :<h2>
     <br>
     <div class="mx-4">
-        <div class="row row-cols-4">
+        <div class="row row-cols-1">
             {% for comment in comments %}
                 {% if comment.valid %}
                     <div class="col mb-3">

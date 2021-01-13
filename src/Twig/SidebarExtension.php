@@ -5,6 +5,7 @@ namespace App\Twig;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
+use DateTime;
 use phpDocumentor\Reflection\Types\Integer;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -39,7 +40,7 @@ class SidebarExtension extends AbstractExtension
     {
         return [
             new TwigFunction('sidebar', [$this, 'getSidebar'], ['is_safe' => ['html']]),
-            new TwigFunction('nbPosts', [$this, 'getNbPosts'])
+            new TwigFunction('getNbPosts', [$this, 'getNbPosts'])
         ];
     }
 
@@ -57,8 +58,22 @@ class SidebarExtension extends AbstractExtension
 
     public function getNbPosts($id)
     {
-        $nbPosts = $this->categoryRepository->findNbPosts($id);
+        $category = $this->categoryRepository->find($id);
+        $nbPosts = 0;
+        $date = new DateTime();
 
+        $posts = $category->getPosts();
+
+        foreach($posts as $post)
+        {
+            if($post->getPublishedAt() < $date)
+            {
+                $nbPosts += 1;
+            }
+        }
+        
         return $nbPosts;
     }
+
+    
 }

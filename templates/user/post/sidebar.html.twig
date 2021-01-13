@@ -3,14 +3,11 @@
 <div class="list-group">
 
     {% for category in categories %}
-
-        <a href="{{ path('category.show', {id: category.id}) }}" class="list-group-item list-group-item-action">
-            {{ category.name }}  -  
-            {% for nbposts in nbPosts(category.id) %}
-                {{ nbposts.nbposts }} post(s)
-            {% endfor %}
-        </a>
-
+        {% if getNbPosts(category.id) > 0 %}
+            <a href="{{ path('category.show', {id: category.id}) }}" class="list-group-item list-group-item-action">
+            {{ category.name }}  -  {{ getNbPosts(category.id) }} post(s)
+            </a>
+        {% endif %}
     {% endfor %}
 
 </div>

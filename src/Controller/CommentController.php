@@ -136,7 +136,7 @@ class CommentController extends AbstractController
         // On met à jour en base de données en supprimant la ligne correspondante (i.e. la requête DELETE)
         $entityManager->flush();
 
-        return $this->redirectToRoute('comment.index');
+        return $this->redirectToRoute('comment.list');
     }
 
     /**

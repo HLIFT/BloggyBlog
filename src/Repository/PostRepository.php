@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Post;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -65,6 +66,24 @@ class PostRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @return Post[]
+     */
+    public function findAllRecentPublishedByCategory(Category $category)
+    {
+        $date = new DateTime();
+
+        return $this->createQueryBuilder('p')
+            ->join('p.categories', 'c')
+            ->where('c.id = :idC')
+            ->andWhere('p.publishedAt < :date')
+            ->setParameter('date', $date)
+            ->setParameter('idC', $category->getId())
+            ->orderBy('p.publishedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
 
 

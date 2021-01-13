@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Post;
 use App\Form\CategoryType;
 use PhpParser\Node\Stmt\Catch_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\CategoryRepository as CategoryRepository;
+use App\Repository\PostRepository as PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,15 +58,15 @@ class CategoryController extends AbstractController
      * @Route("/admin/category/{id}", name="admin.category.show")
      * @Route("/category/{id}/show", name="category.show")
      */
-    public function show(int $id, HttpFoundationRequest $request): Response
+    public function show(int $id, HttpFoundationRequest $request, PostRepository $postRepositoryCustom): Response
     {
         
         $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
         // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
         $category = $categoryRepository->findOneBy(['id' => $id]);
 
-        $posts = $category->getPosts();
-
+        $posts = $postRepositoryCustom->findAllRecentPublishedByCategory($category);
+        dump($posts);
 
         if(!$category) {
             throw $this->createNotFoundException(
