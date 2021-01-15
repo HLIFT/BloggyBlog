@@ -5,10 +5,9 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Form\CategoryType;
+use App\Repository\CategoryRepository;
 use PhpParser\Node\Stmt\Catch_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Repository\CategoryRepository as CategoryRepository;
-use App\Repository\PostRepository as PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,10 +17,14 @@ class CategoryController extends AbstractController
     /**
      * @Route("/admin/category/list", name="category.list")
      */
-    public function list(CategoryRepository $categoryRepositoryCustom): Response
+    public function list(): Response
     {
         $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
-        $categories = $categoryRepositoryCustom->findAllABC();
+
+        /** @var CategoryRepository $categoryRepository */
+
+        $categories = $categoryRepository->findAllABC();
+
         return $this->render('admin/category/index.html.twig', [
             'categories' => $categories,
             ]);
@@ -41,7 +44,6 @@ class CategoryController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            //...
             $category = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
@@ -58,15 +60,17 @@ class CategoryController extends AbstractController
      * @Route("/admin/category/{id}", name="admin.category.show")
      * @Route("/category/{id}/show", name="category.show")
      */
-    public function show(int $id, HttpFoundationRequest $request, PostRepository $postRepositoryCustom): Response
+    public function show(int $id, HttpFoundationRequest $request): Response
     {
-        
         $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
-        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+
         $category = $categoryRepository->findOneBy(['id' => $id]);
 
-        $posts = $postRepositoryCustom->findAllRecentPublishedByCategory($category);
-        dump($posts);
+        $postRepository = $this->getDoctrine()->getRepository(Post::class);
+
+        /** @var PostRepository $postRepository */
+
+        $posts = $postRepository->findAllRecentPublishedByCategory($category);
 
         if(!$category) {
             throw $this->createNotFoundException(
@@ -96,11 +100,10 @@ class CategoryController extends AbstractController
      */
     public function update(int $id, HttpFoundationRequest $request): Response
     {
-        // On récupère le manager des entities
         $entityManager = $this->getDoctrine()->getManager();
-        // On récupère le `repository` en rapport avec l'entity `Post`
+
         $categoryRepository = $entityManager->getRepository(Category::class);
-        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+
         $category = $categoryRepository->find($id);
 
         if(!$category) {
@@ -133,6 +136,7 @@ class CategoryController extends AbstractController
     public function remove($id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        
         $categoryRepository = $entityManager->getRepository(Category::class);
 
         $category = $categoryRepository->find($id);
@@ -142,18 +146,21 @@ class CategoryController extends AbstractController
                 "Pas de Catégorie trouvée avec l'id ".$id
             );
         }
-        // On dit au manager que l'on veux supprimer cet objet en base de données
+
         $entityManager->remove($category);
-        // On met à jour en base de données en supprimant la ligne correspondante (i.e. la requête DELETE)
+
         $entityManager->flush();
 
         return $this->redirectToRoute('category.list');
     }
 
-    public function categories(CategoryRepository $categoryRepositoryCustom): Response
+    public function categories(): Response
     {
-        $categories = $categoryRepositoryCustom->findAllWithPost();
-        dump($categories);
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
+
+        /** @var CategoryRepository $categoryRepository */
+
+        $categories = $categoryRepository->findAllWithPost();
 
         return $this->render('user/comment/_recent_comments.html.twig', [
             'categories' => $categories

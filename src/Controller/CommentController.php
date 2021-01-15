@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
-use App\Repository\CategoryRepository as CategoryRepository;
-use App\Repository\CommentRepository as CommentRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
@@ -18,10 +16,14 @@ class CommentController extends AbstractController
     /**
      * @Route("/admin/comment/list", name="comment.list")
      */
-    public function list(CommentRepository $commentRespositoryCustom): Response
+    public function list(): Response
     {
         $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
-        $comments = $commentRespositoryCustom->findAllRecent();
+
+        /** @var CommentRepository $commentRepository */
+
+        $comments = $commentRepository->findAllRecent();
+
         return $this->render('admin/comment/index.html.twig', [
             'comments' => $comments,
             ]);
@@ -32,9 +34,9 @@ class CommentController extends AbstractController
      */
     public function showPostComment(String $slug): Response
     {
-        // On récupère le `repository` en rapport avec l'entity `Post` 
+
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
-        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+
         $post = $postRepository->findBy(['slug' => $slug]);
 
         if(!$post) {
@@ -57,9 +59,9 @@ class CommentController extends AbstractController
      */
     public function showComment(int $idComment): Response
     {
-        // On récupère le `repository` en rapport avec l'entity `Post` 
+
         $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
-        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+
         $comment = $commentRepository->find($idComment);
 
         if(!$comment) {
@@ -82,11 +84,11 @@ class CommentController extends AbstractController
 
     public function create(int $idPost, HttpFoundationRequest $request): Response
     {
-        // On récupère le manager des entities
+
         $entityManager = $this->getDoctrine()->getManager();
-        // On récupère le `repository` en rapport avec l'entity `Post`
+
         $postRepository = $entityManager->getRepository(Post::class);
-        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+
         $post = $postRepository->find($idPost);
 
         $comment = new Comment();
@@ -97,7 +99,6 @@ class CommentController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            //...
             $date = new DateTime();
             $comment = $form->getData();
             $comment->setValid(false);
@@ -122,6 +123,7 @@ class CommentController extends AbstractController
     public function remove($id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        
         $commentRepository = $entityManager->getRepository(Comment::class);
 
         $comment = $commentRepository->find($id);
@@ -131,9 +133,9 @@ class CommentController extends AbstractController
                 "Pas de Commentaire trouvé avec l'id ".$id
             );
         }
-        // On dit au manager que l'on veux supprimer cet objet en base de données
+
         $entityManager->remove($comment);
-        // On met à jour en base de données en supprimant la ligne correspondante (i.e. la requête DELETE)
+
         $entityManager->flush();
 
         return $this->redirectToRoute('comment.list');
@@ -142,16 +144,16 @@ class CommentController extends AbstractController
     /**
      * @Route("/admin/comment/{id}/validate", name="comment.validate", requirements={"id"="\d+"})
      */
-    public function validate(int $id, HttpFoundationRequest $request): Response
+    public function validate(int $id): Response
     {
-        // On récupère le manager des entities
+
         $entityManager = $this->getDoctrine()->getManager();
-        // On récupère le `repository` en rapport avec l'entity `Post`
+
         $commentRepository = $entityManager->getRepository(Comment::class);
-        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+
         $comment = $commentRepository->find($id);
 
-        //...
+
         $comment->setValid(true);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($comment);

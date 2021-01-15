@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\PostType;
-use App\Repository\PostRepository as PostRepository;
-use App\Repository\CommentRepository as CommentRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,18 +20,23 @@ class PostController extends AbstractController
      * @Route("/post", name="post.list")
      * @Route("/admin/post/list", name="admin.post.list")
      */
-    public function list(HttpFoundationRequest $request, PostRepository $postRepositoryCustom, PaginatorInterface $paginator): Response
+    public function list(HttpFoundationRequest $request, PaginatorInterface $paginator): Response
     {
         $routeName = $request->attributes->get('_route');
-        $allPosts = $postRepositoryCustom->findAllRecent();
 
-        $donnees = $postRepositoryCustom->findAllRecentPublished();
+        $postRepository = $this->getDoctrine()->getRepository(Post::class);
+
+        /** @var PostRepository $postRepository */
+
+        $allPosts = $postRepository->findAllRecent();
+
+        $donnees = $postRepository->findAllRecentPublished();
+
         $posts = $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
             5
         );
-
 
         if($routeName == "admin.post.list")
         {
@@ -64,7 +66,6 @@ class PostController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            //...
             $slugger = new AsciiSlugger();
             $date = new DateTime();
             $post = $form->getData();
@@ -87,13 +88,15 @@ class PostController extends AbstractController
      * @Route("/post/{slug}", name="post.show")
      * @Route("/admin/post/{slug}", name="admin.post.show")
      */
-    public function show(String $slug, HttpFoundationRequest $request, CommentRepository $commentRepository): Response
+    public function show(String $slug, HttpFoundationRequest $request): Response
     {
-        // On récupère le `repository` en rapport avec l'entity `Post` 
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
-        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
-        $post = $postRepository->findBy(['slug' => $slug]);
-        $post = $post[0];
+
+        $post = $postRepository->findOneBy(['slug' => $slug]);
+
+        $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
+
+        /** @var CommentRepository $commentRepository */
 
         $comments = $commentRepository->findPostRecent($post);
 
@@ -127,11 +130,10 @@ class PostController extends AbstractController
      */
     public function update(string $slug, HttpFoundationRequest $request): Response
     {
-        // On récupère le manager des entities
         $entityManager = $this->getDoctrine()->getManager();
-        // On récupère le `repository` en rapport avec l'entity `Post`
+
         $postRepository = $entityManager->getRepository(Post::class);
-        // On fait appel à la méthode générique `find` qui permet de SELECT en fonction d'un Id
+
         $post = $postRepository->findOneBy(['slug' => $slug]);
 
         if(!$post) {
@@ -170,6 +172,7 @@ class PostController extends AbstractController
     public function remove($id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        
         $postRepository = $entityManager->getRepository(Post::class);
 
         $post = $postRepository->find($id);
@@ -179,9 +182,9 @@ class PostController extends AbstractController
                 "Pas de Post trouvé avec l'id ".$id
             );
         }
-        // On dit au manager que l'on veux supprimer cet objet en base de données
+
         $entityManager->remove($post);
-        // On met à jour en base de données en supprimant la ligne correspondante (i.e. la requête DELETE)
+
         $entityManager->flush();
 
         return $this->redirectToRoute('admin.post.list');
