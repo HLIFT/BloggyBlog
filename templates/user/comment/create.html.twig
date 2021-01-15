@@ -12,7 +12,7 @@
             <p class="card-text">{{ post.content|nl2br }}</p>
             <p>Catégories :
             {% for category in post.categories %}
-                    <a href="http://symfony.iut/category/{{ category.id }}" class="mx-1">{{ category.name }}</a>
+                    <a href="http://symfony.iut/category/{{ category.id }}/show" class="mx-1">{{ category.name }}</a>
             {% endfor %}
             </p>
         </div>
