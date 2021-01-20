@@ -26,7 +26,7 @@ class CommentController extends AbstractController
 
         return $this->render('admin/comment/index.html.twig', [
             'comments' => $comments,
-            ]);
+        ]);
     }
 
     /**
@@ -39,9 +39,9 @@ class CommentController extends AbstractController
 
         $post = $postRepository->findBy(['slug' => $slug]);
 
-        if(!$post) {
+        if (!$post) {
             throw $this->createNotFoundException(
-                "Pas de Post trouvé avec le slug ".$slug
+                "Pas de Post trouvé avec le slug " . $slug
             );
         }
 
@@ -64,9 +64,9 @@ class CommentController extends AbstractController
 
         $comment = $commentRepository->find($idComment);
 
-        if(!$comment) {
+        if (!$comment) {
             throw $this->createNotFoundException(
-                "Pas de Comment trouvé avec l'id ".$idComment
+                "Pas de Comment trouvé avec l'id " . $idComment
             );
         }
 
@@ -97,8 +97,7 @@ class CommentController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $date = new DateTime();
             $comment = $form->getData();
             $comment->setValid(false);
@@ -123,14 +122,14 @@ class CommentController extends AbstractController
     public function remove($id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         $commentRepository = $entityManager->getRepository(Comment::class);
 
         $comment = $commentRepository->find($id);
 
-        if(!$comment) {
+        if (!$comment) {
             throw $this->createNotFoundException(
-                "Pas de Commentaire trouvé avec l'id ".$id
+                "Pas de Commentaire trouvé avec l'id " . $id
             );
         }
 
